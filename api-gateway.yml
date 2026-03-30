@@ -5,6 +5,12 @@ spring:
     discovery:
       enabled: true
     gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
       server:
         webflux:
           routes:
@@ -60,19 +66,37 @@ eureka:
       defaultZone: http://eureka-server:8761/eureka
 
 management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: http://zipkin-server:9411/api/v2/spans
   endpoint:
-      gateway:
-        enabled: true 
+    gateway:
+      enabled: true 
   endpoints:
     web:
       exposure:
         include: "*"      
-  springdoc:
-    api-docs:
-      enable: true
-    swagger-ui:
-      config-url: /v3/api-docs/swagger-config
-      disable-swagger-default-url: true
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    urls:
+      - name: Auth Service API
+        url: /auth-service/v3/api-docs
+      - name: Mentor Service API
+        url: /mentor-service/v3/api-docs
+      - name: User Service API
+        url: /user-service/v3/api-docs
+      - name: Session Service API
+        url: /session-service/v3/api-docs
+      - name: Review Service API
+        url: /review-service/v3/api-docs
+      - name: Skill Service API
+        url: /skill-service/v3/api-docs
 # springdoc:
 #   api-docs:
 #     enabled: true
